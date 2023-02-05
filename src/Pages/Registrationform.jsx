@@ -6,6 +6,8 @@ import Textfield from "../Components/Reusablecomponents/Textfield";
 import { Country, State } from "country-state-city";
 import Dropdownlist from "../Components/Reusablecomponents/Dropdownlist";
 import Calender from "../Components/Reusablecomponents/Calender";
+import { Link } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 // console.log(Country.getAllCountries())
 // console.log(State.getAllStates())
 
@@ -51,7 +53,27 @@ function Registrationform() {
     return st;
   };
 
-  console.log(updatedStates);
+ 
+const navigate =useNavigate();
+  const regex = /\S+@\S+\.\S+/;
+
+  const validate = () => {
+    let temp = {};
+    temp.firstname = values.firstname ? "" : "firstname is required";
+    temp.lastname = values.lastname ? "" : "lastname is required";
+    temp.city = values.city ? "" : "city is required";
+    temp.email = regex.test(values.email) ? "" : "email is not valid";
+    temp.mobile=values.mobile.length>9?"":"mobile number needs to be greater than 9 numbers";
+    setErrors({ ...temp });
+    return Object.values(temp).every((x) => x === "");
+  };
+
+  const submit=()=>{
+    if(validate()){
+      alert("successfully submited")
+      navigate('/Employee_table')
+    }
+  }
 
   return (
     <>
@@ -171,7 +193,7 @@ function Registrationform() {
           </fieldset>
           </Box>
           <Box sx={{pt:2 }}>
-          <Button  variant="contained"sx={{ m:1,background:'red' }}>Submit</Button>
+          <Button  variant="contained"sx={{ m:1,background:'red' }} onClick={submit}>Submit</Button>
           <Button  variant="contained" sx={{background:'red' }}>Cancel</Button>
           </Box>
         </Paper>
